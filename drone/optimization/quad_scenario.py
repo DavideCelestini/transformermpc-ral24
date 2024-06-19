@@ -5,7 +5,6 @@ root_folder = os.path.abspath(os.path.dirname(os.path.dirname(os.path.abspath(__
 sys.path.append(root_folder)
 
 import numpy as np
-import jax.numpy as jnp
 
 # state-control dimensions
 n_x = 6 # (px, py, pz, vx, vy, vz) - number of state variables
@@ -13,7 +12,7 @@ n_u = 3 # (ux, uy, uz) - number of control variables\
 # time problem constants
 S = 100 # number of control switches
 n_time_rpod = S
-R = jnp.eye(n_u) # cost term
+R = np.eye(n_u) # cost term
 # constants
 u_max = 10
 mass = 32.0
@@ -57,8 +56,8 @@ n_obs = obs_positions.shape[0] # number of obstacles
 #x_init = jnp.array([-1.9, 0.05, 0.2, 0, 0, 0])
 #x_final = jnp.zeros(n_x)
 
-Q = jnp.zeros((n_x, n_x))
-x_ref = jnp.zeros(n_x)
+Q = np.zeros((n_x, n_x))
+x_ref = np.zeros(n_x)
 
 # Optimization interface
 iter_max_SCP = 20

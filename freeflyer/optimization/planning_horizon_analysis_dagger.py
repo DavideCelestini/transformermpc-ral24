@@ -254,16 +254,16 @@ if __name__ == '__main__':
     mdp_constr = import_config['mdp_constr']
     timestep_norm = import_config['timestep_norm']
     transformer_model_names = ['checkpoint_ff_ctgrtg_art',
-                               None,
-                               None,
-                               None,
-                               None,
-                               None,
-                               None,
-                               None,
-                               None,
                                'checkpoint_ff_ctgrtg_art_cl_8',
                                'checkpoint_ff_ctgrtg_art_cl_9',
+                               None,
+                               None,
+                               None,
+                               None,
+                               None,
+                               None,
+                               None,
+                               None,
                                None
                                ]
     set_start_method('spawn')

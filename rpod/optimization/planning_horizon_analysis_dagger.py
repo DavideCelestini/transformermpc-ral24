@@ -249,7 +249,7 @@ if __name__ == '__main__':
     state_representation = import_config['state_representation']
     dataset_to_use = import_config['dataset_to_use']
     transformer_model_names = ['checkpoint_rtn_ctgrtg',
-                               None,
+                               'checkpoint_rtn_ctgrtg_cl_10',
                                None,
                                None,
                                None,

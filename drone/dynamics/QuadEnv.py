@@ -5,8 +5,6 @@ sys.path.append(root_folder)
 
 import numpy as np
 import matplotlib.pyplot as plt
-import plotly.graph_objects as go
-import jax.numpy as jnp
 from dynamics.quadrotor import QuadModel, sample_init_target
 from optimization.quad_scenario import dataset_scenario as dataset_scenario_quad_scenario
 
@@ -404,7 +402,7 @@ class QuadEnv():
 
         return fig, ax
 
-    def plot3D_plotly(self, plan=None, history=None, maneuver=None, mpc_label='ART'):
+    '''def plot3D_plotly(self, plan=None, history=None, maneuver=None, mpc_label='ART'):
         plan_rtn_ART = [p['state_ART'] for p in plan]
         plan_rtn_ARTMPC = [p['state_ARTMPC'] for p in plan]
         plan_time = [p['time'] for p in plan]
@@ -470,4 +468,4 @@ class QuadEnv():
         ]
         fig.update_layout(sliders=sliders)
 
-        return fig
+        return fig'''

@@ -255,7 +255,7 @@ if __name__ == '__main__':
     timestep_norm = import_config['timestep_norm']
     dataset_scenario = import_config['dataset_scenario']
     transformer_model_names = ['checkpoint_quad_random_forest_ctgrtg',
-                               None,
+                               'checkpoint_quad_random_forest_ctgrtg_cl_7',
                                None,
                                None,
                                None,
@@ -268,7 +268,7 @@ if __name__ == '__main__':
                                None
                                ]
     set_start_method('spawn')
-    num_processes = 16
+    num_processes = 20
 
     # Get the datasets and loaders from the torch data
     _, dataloaders = ART_manager.get_train_val_test_data(mdp_constr, dataset_scenario, timestep_norm)

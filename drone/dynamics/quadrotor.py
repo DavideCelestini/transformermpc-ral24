@@ -4,11 +4,7 @@ import cvxpy as cp
 from scipy import sparse
 from scipy.sparse import csr_matrix, vstack, hstack, eye
 
-import jax.numpy as jnp
-from jax import jacfwd, jacrev, jit, vmap
 from functools import partial
-from jax.config import config
-config.update("jax_enable_x64", True)
 
 from optimization.quad_scenario import *
 
@@ -35,16 +31,14 @@ class QuadModel:
 
     #@partial(jit, static_argnums=(0,))
     def convert_xs_vec_to_xs_mat(self, xs_vec):
-        xs_mat = jnp.reshape(xs_vec, (n_x, S+1), 'F')
+        xs_mat = np.reshape(xs_vec, (n_x, S+1), 'F')
         xs_mat = xs_mat.T # (S+1, n_x)
-        xs_mat = jnp.array(xs_mat)
         return xs_mat
 
     #@partial(jit, static_argnums=(0,))
     def convert_us_vec_to_us_mat(self, us_vec):
-        us_mat = jnp.reshape(us_vec, (n_u, S), 'F')
+        us_mat = np.reshape(us_vec, (n_u, S), 'F')
         us_mat = us_mat.T # (S, n_u)
-        us_mat = jnp.array(us_mat)
         return us_mat
 
     #@partial(jit, static_argnums=(0,))
@@ -56,14 +50,12 @@ class QuadModel:
     
     #@partial(jit, static_argnums=(0,))
     def convert_xs_mat_to_xs_vec(self, xs_mat):
-        xs_vec = jnp.reshape(xs_mat.T, n_x*(S+1), 'F')
-        xs_vec = jnp.array(xs_vec)
+        xs_vec = np.reshape(xs_mat.T, n_x*(S+1), 'F')
         return xs_vec
     
     #@partial(jit, static_argnums=(0,))
     def convert_us_mat_to_us_vec(self, us_mat):
-        us_vec = jnp.reshape(us_mat.T, n_u*S, 'F')
-        us_vec = jnp.array(us_vec)
+        us_vec = np.reshape(us_mat.T, n_u*S, 'F')
         return us_vec
     
     #@partial(jit, static_argnums=(0,))
@@ -82,7 +74,7 @@ class QuadModel:
             z = np.concatenate((
                 (x_init + (x_final - x_init)/T*np.arange(0,T+dt/10,dt)[:,None]).reshape(-1),
                 np.zeros(S*n_u) + 1e-6), axis=-1)
-        return jnp.array(z)
+        return z
     
     def warmstart(self, xs, us):
         z = self.convert_xs_us_mats_to_z(xs, us)
@@ -91,20 +83,10 @@ class QuadModel:
     #@partial(jit, static_argnums=(0,))
     def f(self, x, u):
         v = x[3:6]
-        state_dot = jnp.zeros(n_x)
-        state_dot = state_dot.at[:3].set(v)
-        state_dot = state_dot.at[3:6].set(u / mass)
-        state_dot = state_dot.at[3:6].set(
-            state_dot[3:6] - drag_coefficient * jnp.linalg.norm(v,2) * v / mass)
+        state_dot = np.zeros(n_x)
+        state_dot[:3] = v.copy()
+        state_dot[3:6] = u / mass - drag_coefficient * np.linalg.norm(v,2) * v / mass
         return state_dot
-
-    #@partial(jit, static_argnums=(0,))
-    def f_dx(self, x, u):
-        return jacrev(self.f, argnums=(0))(x, u)
-
-    #@partial(jit, static_argnums=(0,))
-    def f_du(self, x, u):
-        return jacrev(self.f, argnums=(1))(x, u)
 
     def A_d(self,xs):
         v = xs[3:].reshape(3,1)
