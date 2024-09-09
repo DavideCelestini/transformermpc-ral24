@@ -134,8 +134,6 @@ def for_computation(input_iterable):
             t_i = np.random.randint(0, quad_env_art.n_time_rpod - switch_window)
             oracle_timesteps = oracle_timesteps.union(np.arange(t_i, t_i + switch_window))
         
-        oracle_timesteps = set()
-        
         try:
             time_artMPC = np.empty((ff.n_time_rpod,))
             correction_pred_history = []
